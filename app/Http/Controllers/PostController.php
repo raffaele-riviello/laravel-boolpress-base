@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -21,7 +23,7 @@ class PostController extends Controller
         $postsPublished = Post::where('published', '1')->get();
         return view('posts.published', compact('postsPublished'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -30,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -41,7 +43,30 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($data['title'] , '-') . rand(1,100);
+
+        $validator = Validator::make($data, [
+            'title' => 'required|string|max:150',
+            'author' => 'required|string|max:100',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('posts/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $post = new Post;
+        $post->fill($data);
+        $saved = $post->save();
+
+        if(!$saved) {
+            dd('error saving record');
+        }
+
+        return redirect()->route('posts.show', $post->slug);
     }
 
     /**
@@ -50,9 +75,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $post = Post::where('slug', $slug)->first();
+
+        if(empty($post)){
+            abort('404');
+        }
+
+        return view('posts.show', compact('post'));
     }
 
     /**
