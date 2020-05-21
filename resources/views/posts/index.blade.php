@@ -20,6 +20,14 @@
                             <tr>
                                 <td><a href="{{route('posts.show', $post->slug)}}">{{$post->title}}</a></td>
                                 <td>Author: {{$post->author}}</td>
+                                <td><a href="{{route('posts.edit', $post->id)}}">Edit</a></td>
+                                <td><a href="{{route('posts.show', $post->slug)}}">Show</a></td>
+                                <td><form action="{{route('posts.destroy', $post->id)}}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

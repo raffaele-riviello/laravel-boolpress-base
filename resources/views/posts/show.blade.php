@@ -13,10 +13,12 @@
                     <h2>{{$post->title}}</h2>
                     <small>Author: {{$post->author}}</small>
                     <div class="col-12">
-                        <img class="rounded mx-auto d-block" src="{{$post->img}}" alt="{{$post->title}}">
+                        <img class="rounded mx-auto d-block" src="{{$post->img}}" alt="{{$post->title}}" style="max-width: 50%;">
                     </div>
 
-                    <p>{{$post->body}}</p>
+                    <div>
+                        {!! $post->body !!}
+                    </div>
                 </div>
             </div>
             <div class="row">
