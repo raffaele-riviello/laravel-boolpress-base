@@ -17,8 +17,9 @@ Route::get('/', function () {
 
 // Route::get('/posts', 'PostController@index')->name('posts.index');
 // Route::get('/published', 'PostController@published')->name('posts.published');
- 
+
 
 Route::get('/posts/published', 'PostController@published')->name('posts.published');
 
 Route::resource('posts', 'PostController');
+Route::resource('photos', 'PhotoController');
