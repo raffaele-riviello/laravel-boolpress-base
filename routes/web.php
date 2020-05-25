@@ -23,3 +23,17 @@ Route::get('/posts/published', 'PostController@published')->name('posts.publishe
 
 Route::resource('posts', 'PostController');
 Route::resource('photos', 'PhotoController');
+
+Auth::routes();
+
+Route::prefix('admin')
+->namespace('Admin')
+->name('admin.')
+->middleware('auth')
+->group(function() {
+    Route::resource('users', 'UserController');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
